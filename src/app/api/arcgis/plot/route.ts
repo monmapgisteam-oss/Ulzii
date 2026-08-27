@@ -6,6 +6,9 @@ import { schemaOf } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
 
+/** ArcGIS руу олон дараалсан хүсэлт явуулдаг тул хугацааны нөөц нэмэв */
+export const maxDuration = 30;
+
 /**
  * Нэг судалгааны талбайн бүх хүүхэд бичлэгийг татна.
  * Газрын зураг эсвэл хүснэгтээс талбай сонгоход дуудагдана — ингэснээр

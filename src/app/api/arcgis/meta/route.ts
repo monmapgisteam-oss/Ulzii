@@ -4,6 +4,9 @@ import { LAYERS, serviceUrlFor } from "@/lib/config";
 
 export const dynamic = "force-dynamic";
 
+/** ArcGIS руу олон дараалсан хүсэлт явуулдаг тул хугацааны нөөц нэмэв */
+export const maxDuration = 30;
+
 /** Давхаргын тодорхойлолтоос кодчилсон утгын жагсаалтыг гаргана */
 async function layerDomains(layerId: number, service: string) {
   const res = await fetch(`${service}/${layerId}?f=json`, { cache: "no-store" });

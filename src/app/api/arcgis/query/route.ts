@@ -7,6 +7,9 @@ import { schemaOf } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
 
+/** ArcGIS руу олон дараалсан хүсэлт явуулдаг тул хугацааны нөөц нэмэв */
+export const maxDuration = 30;
+
 type Row = Record<string, any>;
 
 const NON_PLANT = new Set(["Bare ground", "Litter"]);
