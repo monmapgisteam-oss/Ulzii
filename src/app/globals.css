@@ -266,6 +266,7 @@ select {
 .filterbar {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 6px;
   flex-wrap: wrap;
   background: transparent;
@@ -273,14 +274,6 @@ select {
   padding: 0;
   flex: 1 1 420px;
   min-width: 0;
-}
-
-.filterbar::before {
-  content: "";
-  width: 1px;
-  height: 20px;
-  background: var(--line);
-  margin-right: 2px;
 }
 
 .field {
@@ -777,6 +770,10 @@ table.grid tbody tr.clickable {
   grid-template-rows: 1fr 1fr;
   gap: 8px;
   padding: 8px;
+}
+
+.chart-card.wide {
+  grid-column: 1 / -1;
 }
 
 .chart-card {

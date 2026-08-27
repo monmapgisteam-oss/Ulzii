@@ -6,7 +6,6 @@ import {
   BarChart,
   Cell,
   ComposedChart,
-  LabelList,
   Legend,
   Line,
   Pie,
@@ -17,7 +16,7 @@ import {
   YAxis,
 } from "recharts";
 import { DataBundle } from "@/lib/types";
-import { byCategory, coverHistogram, coverStructure, topSpecies } from "@/lib/metrics";
+import { byCategory, coverStructure, topSpecies } from "@/lib/metrics";
 import { codeLabelShort } from "@/lib/terms";
 import { Filters } from "@/lib/where";
 import { ProjectSchema } from "@/lib/projects";
@@ -53,15 +52,18 @@ function Box({
   title,
   hint,
   right,
+  wide,
   children,
 }: {
   title: string;
   hint?: string;
   right?: React.ReactNode;
+  /** Хоёр баганыг бүтнээр эзлэх эсэх */
+  wide?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <div className="chart-card">
+    <div className={`chart-card${wide ? " wide" : ""}`}>
       <div className="chart-head">
         <h3 title={title}>{title}</h3>
         {right ?? (hint ? <span className="hint">{hint}</span> : null)}
@@ -151,9 +153,8 @@ export default function ChartsPanel({
   const catLabel = fieldName(cat.field);
 
   const cover = useMemo(() => coverStructure(bundle.stats.lpSpecies), [bundle.stats.lpSpecies]);
-  const species = useMemo(() => topSpecies(bundle.stats.lpSpecies, 8), [bundle.stats.lpSpecies]);
+  const species = useMemo(() => topSpecies(bundle.stats.lpSpecies, 10), [bundle.stats.lpSpecies]);
   const categories = useMemo(() => byCategory(bundle, groupBy), [bundle, groupBy]);
-  const hist = useMemo(() => coverHistogram(bundle), [bundle]);
 
   const dim = (selected: string[], key: string) => (selected.length && !selected.includes(key) ? 0.3 : 1);
   const hasCover = cover.some((c) => c.value > 0);
@@ -301,8 +302,8 @@ export default function ChartsPanel({
             )}
           </Box>
 
-          {/* 3 — Зонхилох ургамлын зүйл */}
-          <Box title="Зонхилох ургамлын зүйл (ТОП-8)" hint="LP data давтамжаар">
+          {/* 3 — Зонхилох ургамлын зүйл (доод мөрийг бүтнээр эзэлнэ) */}
+          <Box title="Зонхилох ургамлын зүйл (ТОП-10)" hint="LP data давтамжаар" wide>
             {species.length ? (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -343,40 +344,6 @@ export default function ChartsPanel({
             )}
           </Box>
 
-          {/* 4 — Талбайн бүрхэцийн тархалт (хэвтээ багана) */}
-          <Box title="Талбайн бүрхэцийн тархалт" hint="LP data — бүрхэцийн ангиллаар">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={hist}
-                layout="vertical"
-                margin={{ top: 4, right: 30, bottom: 2, left: 4 }}
-                barCategoryGap="16%"
-              >
-                <XAxis type="number" hide />
-                <YAxis
-                  type="category"
-                  dataKey="name"
-                  tick={AXIS}
-                  tickLine={false}
-                  axisLine={false}
-                  width={46}
-                />
-                <Tooltip
-                  cursor={{ fill: "rgba(255,255,255,0.04)" }}
-                  content={<Tip valueLabel="Талбайн тоо" />}
-                />
-                <Bar dataKey="value" radius={[0, 3, 3, 0]} isAnimationActive={false} fill="#58b6e8">
-                  <LabelList
-                    dataKey="value"
-                    position="right"
-                    fill="#8ea6b5"
-                    fontSize={9}
-                    formatter={(v: any) => (Number(v) > 0 ? v : "")}
-                  />
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </Box>
         </div>
       </div>
     </section>

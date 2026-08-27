@@ -245,7 +245,6 @@ export default function Dashboard() {
     <main className="app">
       <header className="header">
         <div className="brand">
-          <div className="brand-mark">УН</div>
           <div className="project-switch">
             {(Object.keys(PROJECT_SCHEMAS) as ProjectKey[]).map((k) => (
               <button

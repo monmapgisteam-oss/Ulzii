@@ -106,11 +106,13 @@ export default function MapPanel({
   const hostRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<any>(null);
   const layerRef = useRef<any>(null);
+  const labelLayerRef = useRef<any>(null);
   const modulesRef = useRef<any>(null);
   const onSelectRef = useRef(onSelect);
   onSelectRef.current = onSelect;
 
   const [symbology, setSymbology] = useState<"category" | "cover">("category");
+  const [labelsOn, setLabelsOn] = useState(true);
   const [ready, setReady] = useState(false);
 
   /**
@@ -195,7 +197,8 @@ export default function MapPanel({
       if (destroyed || !hostRef.current || viewRef.current) return;
 
       const layer = new GraphicsLayer({ title: "Судалгааны талбай" });
-      const map = new EsriMap({ basemap: "satellite", layers: [layer] });
+      const labelLayer = new GraphicsLayer({ title: "Plot ID шошго" });
+      const map = new EsriMap({ basemap: "satellite", layers: [layer, labelLayer] });
 
       const view = new MapView({
         container: hostRef.current,
@@ -232,7 +235,7 @@ export default function MapPanel({
           expandTooltip: "Суурь зураглалын сан",
           collapseTooltip: "Хаах",
         }),
-        "top-right",
+        "bottom-right",
       );
 
       // Цэг дээр дарахад талбайг сонгох
@@ -250,6 +253,7 @@ export default function MapPanel({
 
       viewRef.current = view;
       layerRef.current = layer;
+      labelLayerRef.current = labelLayer;
       modulesRef.current = { Graphic, Point };
       setReady(true);
     })();
@@ -259,6 +263,7 @@ export default function MapPanel({
       viewRef.current?.destroy();
       viewRef.current = null;
       layerRef.current = null;
+      labelLayerRef.current = null;
     };
   }, []);
 
@@ -271,6 +276,7 @@ export default function MapPanel({
     if (!layer || !view) return;
 
     layer.removeAll();
+    labelLayerRef.current?.removeAll();
 
     const geometries = points.map(
       (r) =>
@@ -293,6 +299,24 @@ export default function MapPanel({
           },
         }),
       );
+
+      // Plot ID шошго
+      if (labelLayerRef.current) {
+        labelLayerRef.current.add(
+          new Graphic({
+            geometry: geometries[i],
+            symbol: {
+              type: "text",
+              text: String(r.id ?? ""),
+              color: "#ffffff",
+              haloColor: "#08111a",
+              haloSize: 1.2,
+              yoffset: 11,
+              font: { size: 9, weight: "bold" },
+            } as any,
+          }),
+        );
+      }
     });
 
     if (geometries.length) {
@@ -307,6 +331,11 @@ export default function MapPanel({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signature, ready, symbology, schema]);
+
+  // Plot ID шошгыг асаах / унтраах
+  useEffect(() => {
+    if (labelLayerRef.current) labelLayerRef.current.visible = labelsOn;
+  }, [labelsOn, ready, signature]);
 
   // Сонголтыг тодруулах
   useEffect(() => {
@@ -378,6 +407,14 @@ export default function MapPanel({
               Бүрхэц
             </button>
           </div>
+
+          <button
+            className={`btn${labelsOn ? " on" : ""}`}
+            onClick={() => setLabelsOn((v) => !v)}
+            title="Plot ID шошгыг харуулах / нуух"
+          >
+            Plot ID
+          </button>
 
           {selected !== null && (
             <button className="btn on" onClick={() => onSelect(null)}>

@@ -92,8 +92,6 @@ export default function FilterBar({
         onChange={(v) => onChange({ month: v })}
       />
 
-      <div className="spacer" />
-
       <button
         className="btn ghost"
         onClick={onReset}
