@@ -1,0 +1,25 @@
+{
+  "name": "ulzii-envi-survey",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ургамлан нөмрөгийн хээрийн судалгааны мэдээллийн сан (ArcGIS FeatureServer)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@arcgis/core": "^5.1.20",
+    "next": "^15.5.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "recharts": "^2.15.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "typescript": "^5.8.3"
+  }
+}

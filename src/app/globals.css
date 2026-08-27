@@ -1,0 +1,1046 @@
+:root {
+  --bg: #080d11;
+  --panel: #0f181f;
+  --panel-2: #14212a;
+  --panel-3: #1a2b36;
+  --line: #22323e;
+  --line-soft: #1a2731;
+  --text: #e8f0f5;
+  --muted: #8ea6b5;
+  --muted-2: #61798a;
+  --accent: #43d18a;
+  --accent-dim: #2b8f5f;
+  --amber: #e6b455;
+  --sky: #58b6e8;
+  --violet: #a98ede;
+  --danger: #e26d6d;
+  --radius: 10px;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: radial-gradient(1200px 700px at 15% -10%, #12222c 0%, var(--bg) 55%);
+  color: var(--text);
+  font-family: "Segoe UI", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial,
+    "Noto Sans Mongolian", sans-serif;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Бүтэц */
+
+.app {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px 10px 10px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 8px;
+  min-height: 0;
+}
+
+.area-map {
+  grid-column: 1;
+  grid-row: 1;
+  min-height: 0;
+}
+.area-charts {
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 0;
+}
+.area-tables {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  min-height: 0;
+}
+
+@media (max-width: 1180px) {
+  .content {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 0.9fr) minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+  .area-map { grid-column: 1; grid-row: 1; }
+  .area-charts { grid-column: 1; grid-row: 2; }
+  .area-tables { grid-column: 1; grid-row: 3; }
+}
+
+/* Панель */
+
+.panel {
+  background: linear-gradient(180deg, var(--panel-2) 0%, var(--panel) 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line-soft);
+  background: rgba(255, 255, 255, 0.015);
+  flex: 0 0 auto;
+}
+
+.panel-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.panel-title::before {
+  content: "";
+  width: 3px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.85;
+}
+
+.panel-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+}
+
+/* Толгой хэсэг */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1px 2px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(150deg, var(--accent) 0%, var(--accent-dim) 60%, #1d5f45 100%);
+  display: grid;
+  place-items: center;
+  color: #05130c;
+  font-weight: 800;
+  font-size: 14px;
+  flex: 0 0 auto;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.project-switch {
+  display: flex;
+  gap: 6px;
+}
+
+.project-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.project-tag:hover {
+  border-color: #2e4553;
+  color: var(--text);
+}
+
+.project-tag.on {
+  background: rgba(67, 209, 138, 0.13);
+  border-color: rgba(67, 209, 138, 0.35);
+  color: #9fe9c4;
+  font-weight: 650;
+  cursor: default;
+}
+
+.brand p {
+  margin: 1px 0 0;
+  font-size: 10.5px;
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+
+.kpi-row {
+  display: flex;
+  gap: 6px;
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+
+.kpi {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 4px 10px;
+  min-width: 78px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.kpi-label {
+  font-size: 9.5px;
+  color: var(--muted-2);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.kpi-value {
+  font-size: 15px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+}
+
+.kpi-value small {
+  font-size: 9.5px;
+  color: var(--muted-2);
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+/* Шүүлтүүрийн мөр */
+
+.filterbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  flex: 1 1 420px;
+  min-width: 0;
+}
+
+.filterbar::before {
+  content: "";
+  width: 1px;
+  height: 20px;
+  background: var(--line);
+  margin-right: 2px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Шүүлтүүрийн товч — шошго ба утга нэг хайрцагт */
+
+.filter-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  width: max-content;
+  height: 28px;
+  padding: 0 8px 0 9px;
+  background: #0c141a;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.filter-pill:hover {
+  border-color: #2e4553;
+}
+
+.filter-pill.on {
+  border-color: rgba(67, 209, 138, 0.42);
+  background: rgba(67, 209, 138, 0.08);
+}
+
+.pill-label {
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  white-space: nowrap;
+  flex: 0 0 auto;
+  max-width: 92px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pill-value {
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+  text-align: right;
+}
+
+.filter-pill.on .pill-value {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pill-caret {
+  flex: 0 0 auto;
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 4px solid var(--muted-2);
+}
+
+.ctl {
+  background: #0c141a;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 4px 7px;
+  height: 26px;
+  outline: none;
+  min-width: 0;
+}
+
+.ctl:focus {
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 0 2px rgba(67, 209, 138, 0.13);
+}
+
+select.ctl {
+  cursor: pointer;
+  appearance: none;
+  padding-right: 20px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 11px) 11px, calc(100% - 7px) 11px;
+  background-size: 4px 4px, 4px 4px;
+  background-repeat: no-repeat;
+}
+
+.btn {
+  background: var(--panel-3);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  height: 26px;
+  padding: 0 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.btn:hover {
+  background: #21343f;
+  border-color: #2e4553;
+}
+
+.btn.primary {
+  background: rgba(67, 209, 138, 0.14);
+  border-color: rgba(67, 209, 138, 0.4);
+  color: #b8f0d4;
+}
+
+.btn.ghost {
+  background: transparent;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Олон сонголттой унадаг цэс */
+
+.multi {
+  position: relative;
+}
+
+.multi-menu {
+  position: absolute;
+  z-index: 900;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 268px;
+  max-height: 300px;
+  overflow: auto;
+  background: #0e1920;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+  padding: 5px;
+}
+
+.multi-menu .search {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 7px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.opt:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.opt input {
+  accent-color: var(--accent);
+  margin: 0;
+}
+
+.opt .count {
+  margin-left: auto;
+  color: var(--muted-2);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge-n {
+  background: rgba(67, 209, 138, 0.18);
+  color: #9fe9c4;
+  border-radius: 999px;
+  padding: 0 5px;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 15px;
+  text-align: center;
+}
+
+/* Идэвхтэй шүүлтүүр */
+
+.chips {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(88, 182, 232, 0.12);
+  border: 1px solid rgba(88, 182, 232, 0.3);
+  color: #bfe3f7;
+  border-radius: 999px;
+  padding: 2px 6px 2px 8px;
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+
+.chip button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  padding: 0 1px;
+  line-height: 1;
+}
+
+.chip button:hover {
+  opacity: 1;
+}
+
+/* Хүснэгт */
+
+.table-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+}
+
+table.grid {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+table.grid thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #16232c;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  padding: 6px 9px;
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+table.grid thead th:hover {
+  color: var(--text);
+}
+
+table.grid thead th .sort {
+  color: var(--accent);
+  margin-left: 4px;
+}
+
+table.grid tbody td {
+  padding: 5px 9px;
+  border-bottom: 1px solid var(--line-soft);
+  white-space: nowrap;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.grid tbody tr:hover td {
+  background: rgba(88, 182, 232, 0.07);
+}
+
+table.grid tbody tr.selected td {
+  background: rgba(67, 209, 138, 0.13);
+}
+
+table.grid tbody tr.clickable {
+  cursor: pointer;
+}
+
+.num {
+  text-align: right;
+}
+
+.muted {
+  color: var(--muted-2);
+}
+
+.tabs {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.tab {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tab.active {
+  background: rgba(67, 209, 138, 0.13);
+  border-color: rgba(67, 209, 138, 0.35);
+  color: #b8f0d4;
+  font-weight: 600;
+}
+
+.tab .n {
+  color: var(--muted-2);
+  font-size: 10px;
+  margin-left: 5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--muted-2);
+}
+
+/* Газрын зураг */
+
+.map-root {
+  position: absolute;
+  inset: 0;
+}
+
+/* ArcGIS Maps SDK-ийн харагдах байдлыг хөтөлбөрийн загварт нийцүүлэх */
+
+.esri-view,
+.esri-view-surface {
+  background: #0a1218;
+}
+
+.esri-view .esri-attribution {
+  background: rgba(8, 13, 17, 0.75);
+  color: var(--muted-2);
+  font-size: 9px;
+}
+
+.esri-view .esri-attribution a {
+  color: var(--muted);
+}
+
+.esri-ui .esri-widget--button,
+.esri-ui .esri-widget {
+  background: rgba(12, 20, 26, 0.92);
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.esri-ui .esri-widget--button:hover {
+  background: #21343f;
+  color: var(--text);
+}
+
+.esri-basemap-gallery {
+  max-height: 340px;
+  width: 300px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.esri-basemap-gallery__item {
+  border-color: transparent;
+}
+
+.esri-basemap-gallery__item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.esri-basemap-gallery__item--selected {
+  border-color: rgba(67, 209, 138, 0.55) !important;
+  background: rgba(67, 209, 138, 0.12) !important;
+}
+
+.esri-basemap-gallery__item-title {
+  color: var(--muted);
+  font-size: 10.5px;
+}
+
+.esri-popup__main-container {
+  background: #101c24;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.esri-popup__header-title,
+.esri-popup__header-title:hover {
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 650;
+}
+
+.esri-popup__content {
+  margin: 8px 12px 12px;
+  font-size: 11.5px;
+}
+
+.esri-popup__pointer-direction {
+  background: #101c24;
+  border: 1px solid var(--line);
+}
+
+.map-legend {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 500;
+  background: rgba(12, 20, 26, 0.88);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.map-legend .row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+}
+
+.map-tools {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 500;
+  display: flex;
+  gap: 4px;
+}
+
+.map-tools .btn {
+  height: 24px;
+  font-size: 11px;
+  background: rgba(12, 20, 26, 0.9);
+  backdrop-filter: blur(4px);
+}
+
+.map-tools .btn.on {
+  border-color: rgba(67, 209, 138, 0.45);
+  color: #b8f0d4;
+}
+
+/* График */
+
+.charts-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  padding: 8px;
+}
+
+.chart-card {
+  background: rgba(255, 255, 255, 0.017);
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 5px 8px 2px;
+}
+
+.chart-head h3 {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chart-head .hint {
+  font-size: 9px;
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+
+.chart-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0 2px 2px;
+}
+
+.seg {
+  display: flex;
+  background: #0c141a;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.seg button {
+  background: transparent;
+  border: 0;
+  padding: 2px 7px;
+  font-size: 9.5px;
+  color: var(--muted-2);
+  cursor: pointer;
+}
+
+.seg button.on {
+  background: rgba(67, 209, 138, 0.16);
+  color: #b8f0d4;
+}
+
+.tooltip-box {
+  background: #0e1920;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 6px 9px;
+  font-size: 11px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.tooltip-box .t-name {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.tooltip-box .t-row {
+  color: var(--muted);
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+/* Төлөв, мэдэгдэл */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--muted-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.status .dot {
+  width: 7px;
+  height: 7px;
+  border: 0;
+}
+
+.dot.ok { background: var(--accent); }
+.dot.warn { background: var(--amber); }
+.dot.err { background: var(--danger); }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 13, 17, 0.62);
+  z-index: 700;
+  backdrop-filter: blur(1.5px);
+}
+
+.overlay .box {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  max-width: 460px;
+  padding: 14px 18px;
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(67, 209, 138, 0.25);
+  border-top-color: var(--accent);
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--muted-2);
+  font-size: 12px;
+  text-align: center;
+  padding: 18px;
+}
+
+.mono {
+  font-family: "Cascadia Mono", "Consolas", ui-monospace, monospace;
+  font-size: 10.5px;
+}
+
+.where-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted-2);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.where-bar code {
+  color: #9fd0ee;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #253a47;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #33505f;
+  background-clip: content-box;
+}
+
+/* Esri суурь зураглалын сан (basemap gallery) */
+
+.basemap-gallery {
+  position: absolute;
+  z-index: 950;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 322px;
+  background: rgba(11, 19, 25, 0.97);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.6);
+  padding: 8px;
+  backdrop-filter: blur(6px);
+}
+
+.gallery-title {
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  padding: 0 2px 6px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  max-height: 348px;
+  overflow: auto;
+}
+
+.gallery-item {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  padding: 3px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+}
+
+.gallery-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.gallery-item.on {
+  border-color: rgba(67, 209, 138, 0.55);
+  background: rgba(67, 209, 138, 0.12);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 46px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid var(--line-soft);
+  background: #0c141a;
+  display: block;
+}
+
+.gallery-item span {
+  font-size: 9.5px;
+  line-height: 1.25;
+  color: var(--muted);
+  white-space: normal;
+}
+
+.gallery-item.on span {
+  color: #b8f0d4;
+}
