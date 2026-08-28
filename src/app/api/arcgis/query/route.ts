@@ -111,7 +111,7 @@ export async function POST(req: Request) {
       );
       if (!parents.length) {
         return NextResponse.json({
-          authenticated: true,
+          authenticated: Boolean(token),
           where: { survey: `${surveyWhere} AND 1=0`, bichiglel: speciesWhereB, lpdata: speciesWhereL },
           counts: { survey: 0, bichiglel: 0, lpdata: 0 },
           truncated: { lpdata: false },
@@ -138,7 +138,7 @@ export async function POST(req: Request) {
 
     if (!parentIds.length) {
       return NextResponse.json({
-        authenticated: true,
+        authenticated: Boolean(token),
         where: { survey: surveyWhere, bichiglel: "—", lpdata: "—" },
         counts: { survey: survey.length, bichiglel: 0, lpdata: 0 },
         truncated: { lpdata: false },
@@ -175,7 +175,7 @@ export async function POST(req: Request) {
     ]);
 
     return NextResponse.json({
-      authenticated: true,
+      authenticated: Boolean(token),
       where: {
         survey: surveyWhere,
         bichiglel: speciesWhereB ?? "parentglobalid IN (…)",
