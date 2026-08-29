@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getToken, queryAll } from "@/lib/arcgis-server";
+import { availableFields, getToken, queryAll } from "@/lib/arcgis-server";
 import { lit } from "@/lib/where";
 import { serviceUrlFor } from "@/lib/config";
 import { schemaOf } from "@/lib/projects";
@@ -27,9 +27,10 @@ export async function GET(req: Request) {
     if (!token || !service) return NextResponse.json({ bichiglel: [], lpdata: [] });
 
     const where = `parentglobalid = ${lit(gid)}`;
+    const lpFields = await availableFields("lpdata", schema.lpdata.fields, service);
     const [bichiglel, lpdata] = await Promise.all([
       queryAll("bichiglel", { where, outFields: "*", orderByFields: "objectid ASC" }, service),
-      queryAll("lpdata", { where, outFields: schema.lpdata.fields.join(","), orderByFields: "objectid ASC" }, service),
+      queryAll("lpdata", { where, outFields: lpFields, orderByFields: "objectid ASC" }, service),
     ]);
 
     return NextResponse.json({

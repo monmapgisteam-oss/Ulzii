@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getToken, queryAll, queryCount, queryGroupCount } from "@/lib/arcgis-server";
+import { availableFields, getToken, queryAll, queryCount, queryGroupCount } from "@/lib/arcgis-server";
 import { buildSurveyWhere, chunkedIn, inClause, Filters } from "@/lib/where";
 import { demoBundle } from "@/lib/demo";
 import { LP_ROW_LIMIT, PLANT_ONLY_SQL, serviceUrlFor } from "@/lib/config";
@@ -152,6 +152,9 @@ export async function POST(req: Request) {
     const whereB = childWhere(parentIds, speciesWhereB);
     const whereL = childWhere(parentIds, speciesWhereL);
 
+    // Давхаргад бодитоор байгаа талбаруудыг л нэхнэ (схем өөрчлөгдөж болно)
+    const lpFields = await availableFields("lpdata", schema.lpdata.fields, service);
+
     // Бичиглэлийн хүснэгт харьцангуй бага тул бүрэн татна.
     // Шугам-цэгийн хүснэгт хэдэн арван мянган мөртэй байж болох тул
     // графикийн үзүүлэлтийг ArcGIS-ийн бүлэглэсэн статистикаар тооцож,
@@ -163,7 +166,7 @@ export async function POST(req: Request) {
         "lpdata",
         {
           where: whereL,
-          outFields: schema.lpdata.fields.join(","),
+          outFields: lpFields,
           orderByFields: "objectid ASC",
           limit: LP_ROW_LIMIT,
         },

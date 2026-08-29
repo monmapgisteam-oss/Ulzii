@@ -11,6 +11,8 @@ type TabKey = "survey" | "bichiglel" | "lpdata";
 type Props = {
   bundle: DataBundle;
   schema: ProjectSchema;
+  /** Давхарга тус бүрд бодитоор байгаа талбарууд */
+  fields?: { survey: string[]; bichiglel: string[]; lpdata: string[] };
   /** Талбарын нэршил (ArcGIS alias) */
   fieldName?: FieldLabeler;
   plotChildren: PlotChildren | null;
@@ -30,6 +32,7 @@ const TAB_LABEL: Record<TabKey, string> = {
 export default function TablesPanel({
   bundle,
   schema,
+  fields,
   fieldName = fieldLabel,
   plotChildren,
   plotLoading,
@@ -70,9 +73,15 @@ export default function TablesPanel({
   /** Шугам-цэгийн хүснэгт хязгаарлагдаж татагдсан эсэх */
   const lpTruncated = bundle.truncated.lpdata && !(scoped && plotLoaded);
 
+  /** Сервис дээр байхгүй болсон талбарыг хүснэгтэд харуулахгүй */
+  const columnsOf = (layer: "survey" | "bichiglel" | "lpdata", columns: string[]) => {
+    const available = fields?.[layer];
+    return available && available.length ? columns.filter((c) => available.includes(c)) : columns;
+  };
+
   const surveyState = useTableState({
     rows: bundle.survey,
-    columns: schema.survey.columns,
+    columns: columnsOf("survey", schema.survey.columns),
     storageKey: `${schema.key}:survey`,
     defaultHidden: ["globalid", "Creator", "Editor", "CreationDate", "EditDate"],
     defaultSort: { field: "date", dir: "desc" },
@@ -80,7 +89,7 @@ export default function TablesPanel({
 
   const bichiglelState = useTableState({
     rows: bichiglelRows,
-    columns: schema.bichiglel.columns,
+    columns: columnsOf("bichiglel", schema.bichiglel.columns),
     storageKey: `${schema.key}:bichiglel`,
     defaultHidden: schema.bichiglel.hidden,
     defaultSort: { field: "objectid", dir: "asc" },
@@ -88,7 +97,7 @@ export default function TablesPanel({
 
   const lpdataState = useTableState({
     rows: lpdataRows,
-    columns: schema.lpdata.columns,
+    columns: columnsOf("lpdata", schema.lpdata.columns),
     storageKey: `${schema.key}:lpdata`,
     defaultHidden: schema.lpdata.hidden,
     defaultSort: { field: "objectid", dir: "asc" },

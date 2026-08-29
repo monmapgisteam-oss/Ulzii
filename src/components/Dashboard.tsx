@@ -303,6 +303,7 @@ export default function Dashboard() {
         <TablesPanel
           bundle={bundle}
           schema={schema}
+          fields={meta?.fields}
           fieldName={fieldName}
           plotChildren={plotChildren}
           plotLoading={plotLoading}

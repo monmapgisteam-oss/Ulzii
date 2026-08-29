@@ -107,6 +107,49 @@ async function queryOnce(layerId: number, params: QueryParams, service: string =
   return json;
 }
 
+/**
+ * Давхаргад бодитоор байгаа талбаруудын нэр (кэштэй).
+ * Маягтын зохиогч талбар нэмэх/устгах үед хүсэлт унахаас сэргийлнэ.
+ */
+const fieldCache = new Map<string, { names: string[]; expires: number }>();
+
+export async function layerFieldNames(
+  layer: LayerKey,
+  service: string = SERVICE_URL,
+): Promise<string[]> {
+  const key = `${service}#${LAYERS[layer]}`;
+  const hit = fieldCache.get(key);
+  if (hit && hit.expires > Date.now()) return hit.names;
+
+  try {
+    const res = await fetch(`${service}/${LAYERS[layer]}?f=json`, { cache: "no-store" });
+    const def = await res.json();
+    const names: string[] = (def?.fields ?? []).map((f: any) => String(f.name));
+    if (names.length) {
+      fieldCache.set(key, { names, expires: Date.now() + 5 * 60_000 });
+      return names;
+    }
+  } catch {
+    /* тодорхойлолт татаж чадаагүй бол хязгаарлахгүй */
+  }
+  return [];
+}
+
+/**
+ * Хүссэн талбаруудаас давхаргад байгаагий нь л үлдээнэ.
+ * Жагсаалт хоосон бол бүх талбарыг (*) авна.
+ */
+export async function availableFields(
+  layer: LayerKey,
+  wanted: string[],
+  service: string = SERVICE_URL,
+): Promise<string> {
+  const names = await layerFieldNames(layer, service);
+  if (!names.length) return "*";
+  const ok = wanted.filter((f) => names.includes(f));
+  return ok.length ? ok.join(",") : "*";
+}
+
 /** Нөхцөлд тохирох бичлэгийн тоог тооцно */
 export async function queryCount(
   layer: LayerKey,
